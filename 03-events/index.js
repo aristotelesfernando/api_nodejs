@@ -1,4 +1,4 @@
-const EventEmitter = require('event');
+const EventEmitter = require('events');
 
 class MeuEmissor extends EventEmitter {}
 
@@ -9,10 +9,15 @@ meuEmissor.on(nomeEvento, function (click) {
     console.log('um usuário clicou', click);
 });
 
-meuEmissor.emit(nomeEvento, 'na barra de rolagem');
-meuEmissor.emit(nomeEvento, 'no botao ok');
+// meuEmissor.emit(nomeEvento, 'na barra de rolagem');
+// meuEmissor.emit(nomeEvento, 'no botao ok');
 
-let count = 0;
-setInterval(() => {
-    meuEmissor.emit(nomeEvento, 'no ok' + (cont++));
-}, 1000);
+// let count = 0;
+// setInterval(() => {
+//     meuEmissor.emit(nomeEvento, 'no ok' + (cont++));
+// }, 1000);
+
+const stdin = process.openStdin();
+stdin.addListener('data', function (value) {
+    console.log(`Voce digitou: ${value.toString().trim()}`);
+});
