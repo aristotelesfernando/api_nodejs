@@ -5,9 +5,15 @@
  * 2 - Obter o endereço do usuário pelo seu Id
  */
 
+//importando um módulo interno do node
+const util = require("util");
+// automatizando a função que usa callback para promise
+const obterEnderecoAsync = util.promisify(obterEndereco);
+
 function obterUsuario() {
   return new Promise(function resolvePromise(resolve, reject) {
     setTimeout(function () {
+      //return reject(new Error("Deu ruim de verdade"));
       return resolve({
         id: 1,
         nome: "Aladin",
@@ -17,13 +23,15 @@ function obterUsuario() {
   });
 }
 
-function obterTelefone(idUsuario, callback) {
-  setTimeout(() => {
-    return callback(null, {
-      telefone: "988752339",
-      ddd: 91,
-    });
-  }, 2000);
+function obterTelefone(idUsuario) {
+  return new Promise(function resolvePromise(resolve, reject) {
+    setTimeout(() => {
+      return resolve({
+        telefone: "988752339",
+        ddd: 91,
+      });
+    }, 2000);
+  });
 }
 
 function obterEndereco(idUsuario, callback) {
@@ -38,10 +46,36 @@ function obterEndereco(idUsuario, callback) {
 const usuarioPromise = obterUsuario();
 //para manipular o sucesso usamos .THEN
 usuarioPromise
+  .then(function (usuario) {
+    return obterTelefone(usuario.id).then(function resolverTelefone(result) {
+      return {
+        usuario: {
+          nome: usuario.nome,
+          id: usuario.id,
+        },
+        telefone: result,
+      };
+    });
+  })
   .then(function (resultado) {
-    console.log("resultado ", resultado);
+    const endereco = obterEnderecoAsync(resultado.usuario.id);
+    return endereco.then(function resolverEndereco(result) {
+      return {
+        usuario: resultado.usuario,
+        telefone: resultado.telefone,
+        endereco: result,
+      };
+    });
+  })
+  .then(function (resultado) {
+    console.log(`
+        Nome: ${resultado.usuario.nome}
+        Endereco: ${resultado.endereco.rua}, ${resultado.endereco.numero}
+        Telefone: (${resultado.telefone.ddd})${resultado.telefone.telefone}
+    `);
   })
   .catch(function (error) {
+    //catch função para tratar erro
     console.error("Deu ruim ", error);
   });
 
