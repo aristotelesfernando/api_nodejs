@@ -8,10 +8,14 @@ async function obterPessoas(nome) {
     return response.data;
 }
 
-obterPessoas('r2')
-    .then(function (resultado) {
-        console.log('Resultado: ', resultado);
-    })
-    .catch(function (error) {
-        console.error('Deu Ruim! ', error);
-    });
+module.exports = {
+    obterPessoas: obterPessoas
+}
+
+// obterPessoas('r2')
+//     .then(function (resultado) {
+//         console.log('Resultado: ', resultado);
+//     })
+//     .catch(function (error) {
+//         console.error('Deu Ruim! ', error);
+//     });
