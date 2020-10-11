@@ -26,7 +26,7 @@ async function main() {
         //const nameTeams = results.teams.map((times) => times.strAlternate);
 
         const nameTeams = results.teams.meuMap(function(times, indice) {
-            return times.strAlternate;
+            return `${++indice} - ${times.strAlternate}`;
         });
 
         console.log('Nome do Time:', nameTeams);
