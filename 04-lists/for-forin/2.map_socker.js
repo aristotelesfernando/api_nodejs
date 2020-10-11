@@ -2,7 +2,7 @@ const service = require('./service_socker');
 
 Array.prototype.meuMap = function(callback) {
     const novoArrayMapeado = [];
-    for(let i = 0; i <= this.length; i++) {
+    for(let i = 0; i <= (this.length-1); i++) {
         const resultado = callback(this[i], i);
         novoArrayMapeado.push(resultado);
     }
@@ -26,7 +26,7 @@ async function main() {
         //const nameTeams = results.teams.map((times) => times.strAlternate);
 
         const nameTeams = results.teams.meuMap(function(times, indice) {
-            return times.teams.strAlternate;
+            return times.strAlternate;
         });
 
         console.log('Nome do Time:', nameTeams);
