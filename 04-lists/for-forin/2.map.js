@@ -5,11 +5,11 @@ async function main() {
         const results = await service.obterPessoas('a');
         const names = [];
         
-        results.forEach(function (item) {
+        results.results.forEach(function (item) {
             names.push(item.name);
         });
 
-        cpnsole.log(names);
+        console.log(names);
     } catch (error) {
         console.error('Deu Ruim: ', error);
     }
