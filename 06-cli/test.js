@@ -9,20 +9,21 @@ const DEFAULT_ITEM_CADASTRAR = {nome:'Flash', poder:'speed', id: 1};
 
 describe('Suite de manipulação de herois', () => {
 
-    it('deve pesquisar um herio pesquisando arquivos', async () => {
+    it('deve pesquisar um heroi pesquisando arquivos', async () => {
         const expected = DEFAULT_ITEM_CADASTRAR;
 
         const [resultado] = await database.listar(expected.id);
 
-        //ok(resultado, expected);
         deepEqual(resultado, expected);
 
     });
 
-    // it('deve cadastrar um heroi, usando arquivos', async () => {
-    //     const expected = DEFAULT_ITEM_CADASTRAR;
+    it('deve cadastrar um heroi, usando arquivos', async () => {
+        const expected = DEFAULT_ITEM_CADASTRAR;
+        const resultado = await database.cadastrar(DEFAULT_ITEM_CADASTRAR);
+        const [atual] = await database.listar(DEFAULT_ITEM_CADASTRAR.id);
 
-    //     ok(null, expected);
-    // });
+        deepEqual(atual, expected);
+    });
 });
 
