@@ -2,13 +2,11 @@ const ICrud = require('./interfaces/interfaceCrud');
 
 const Sequelize = require('sequelize');
 
-
 class Postgres extends ICrud {
     constructor() {
         super();
         this._driver = null;
         this._heroes = null;
-        this._connect();
     }
 
     async isConnected() {
@@ -45,11 +43,26 @@ class Postgres extends ICrud {
         this._heroes.sync();   
     }
 
-    create(item) {
-        console.log('item salvo em Postgres');
+    async create(item) {
+        const { dataValues } = await this._heroes.create(item, {raw: true}); 
+
+        return dataValues;
     }
 
-    _connect() {
+    async read(item = {}) {
+        return await this._heroes.findAll({where: item, raw: true});
+    }
+
+    async update(id, item) {
+        return this._heroes.update(item, {where: {id: id}});
+    }
+
+    async delete(id) {
+        const query = id ? { id }:{};
+        return this._heroes.destroy({where: query});
+    }
+
+     async connect() {
         this._driver = new Sequelize(
             'heroes',
             'fernando',
@@ -61,7 +74,7 @@ class Postgres extends ICrud {
                 operatorsAliases: false
             }
         );
-        this.defineModel();
+        await this.defineModel();
     }
 }
 
